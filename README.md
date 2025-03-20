@@ -162,7 +162,7 @@ This works for the `backend` and `facade` services, which can now publish messag
 
 ![](img/kube/calico-payments-blocked.jpg)
 
-The final step is to allow egress from the `payments` service to the queue. [payments-policy.yaml](kubernetes/policies/egress/payments-policy.yaml) allows this:
+The final step is to allow egress from the `payments` service to the queue. Write [payments-policy.yaml](kubernetes/policies/egress/payments-policy.yaml) which allows this:
 
 - in the `pci` namespace
 - for pods matching the label `app=payments`
@@ -197,5 +197,6 @@ kubectl delete ns management-ui
 
 ## Thank you
 
-We hope you enjoyed both the Swarm and Kubernetes networking labs with Docker EE. If you have any enhancements to the workshop please file an issue or initiate a pull request and we'll take a look! Enjoy the rest of DockerCon 2018! 
+Do not forget to send me one report per student with details of the created files, and explanations of your choices.
+Please send the report through email or Teams private message.
 
