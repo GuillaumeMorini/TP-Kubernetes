@@ -49,7 +49,7 @@ kubectl apply -f ./manifests/
 
 Check out the services in the Kubernetes `management-ui` namespace. This will allow you to visualize the traffic flows occurring between the micro-services in the application.  To do so, please follow these instructions.
 
-Identify the node port used and open a new web browser tab/window with localhost and the node port behind (like `http://localhost:33002`). This should show the real-time application data flows.
+Identify the node port used and open a new web browser tab/window with localhost and the node port behind (like `http://localhost:30002`). This should show the real-time application data flows.
 
 Be sure to check that you forced your browser to use http and not https, as the app is based on HTTP.
 
@@ -57,15 +57,15 @@ If it all worked, you should now see something that looks like the image below
 
 ![](img/kube/calico-stars-no-policy.jpg)
 
-This isn't good. The frontend is communicating directly with the backend, as well as with the facade, and the facade and backend are communicating with the frontend. We can fix that with ingress policies.
+This isn't good. The client is communicating directly with the backend, as well as with the facade, and the facade and backend are communicating with the client. We can fix that with ingress policies.
 
 ## Ingress Policies
 
 To start with you'll write and deploy a blanket ingress policy which restricts all traffic to all pods. When this is enforced, pods will only be able to communicate if they have an ingress policy which specifies explicit access, overriding the default policy.
 
-Deny all ingress for app namespaces by writing and deploying [default-deny.yaml](kubernetes/policies/ingress/default-deny.yaml), which sets up a network policy in each namespace with these rules:
+Deny all ingress for app namespaces by writing and deploying [default-deny.yaml](kubernetes/policies/ingress/default-deny.yaml), which sets up a network policy in each namespace (except management-ui) with these rules:
 
-- for any pod in the namspace
+- for any pod in the namespace
 - restrict ingress traffic to an empty list - i.e. allow no ingress traffic
 
 ```
@@ -74,9 +74,9 @@ kubectl apply -f ./policies/ingress/default-deny.yaml
 
 > Refresh your management UI and after a few seconds you'll see a blank screen. The UI component can't even access the application pods to see where traffic is flowing!
 
-The first thing is to allow ingress traffic from the management UI, so you can see what's happening. Write the file [allow-management-ui.yaml](kubernetes/policies/ingress/allow-management-ui.yaml) that sets up a policy in each namespace with these rules:
+The first thing is to allow ingress traffic from the management UI, so you can see what's happening. Write the file [allow-management-ui.yaml](kubernetes/policies/ingress/allow-management-ui.yaml) that sets up a policy in each namespace (except management-ui) with these rules:
 
-- for any pod in the namspace
+- for any pod in the namespace
 - allow ingress traffic from any pod in a namespace which matches the label `role=management-ui`
 
 Deploy the policy to set up the UI:
@@ -197,6 +197,6 @@ kubectl delete ns management-ui
 
 ## Thank you
 
-Do not forget to send me one report per student with details of the created files, and explanations of your choices.
+Do not forget to send me one report per group of student with details of the created files, and explanations of your choices.
 Please send the report through email or Teams private message.
 
