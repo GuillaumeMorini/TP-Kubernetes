@@ -8,7 +8,7 @@ spec:
   ports:
   - port: 9001 
     targetPort: 9001
-    nodePort: 33002
+    nodePort: 30002
   selector:
     role: management-ui 
 ---
